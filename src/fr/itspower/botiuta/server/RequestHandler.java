@@ -35,10 +35,10 @@ public class RequestHandler implements Runnable {
                     "Error accepting client connection", e);
             }
             new Thread(
-            	//clientSocket
+            		
             ).start();
         }
-        System.out.println("Server Stopped.") ;
+        System.out.println("serveur stoppe") ;
     }
 
 
