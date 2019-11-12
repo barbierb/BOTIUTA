@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class RequestHandler implements Runnable {
@@ -21,14 +22,19 @@ public class RequestHandler implements Runnable {
 		try {
 			
 			BufferedReader bis = new BufferedReader(new InputStreamReader(request.getInputStream()));
-			OutputStream out = request.getOutputStream();
+			PrintWriter out = new PrintWriter(request.getOutputStream());
 			
 			String str;
-			while ((str = bis.readLine()) != null) {
-				sb.append(str);
-				System.out.println(str);
+			while (!(str = bis.readLine()).isEmpty()) {
+				sb.append(str).append('\n');
 			}
-			out.write(("HTTP/1.1 200 OK\n\n").getBytes());
+			
+		    out.println("HTTP/1.0 200 OK");
+		    out.println("Content-Type: text/html");
+		    out.println("Server: SimpleWebServer");
+		    out.println("");
+		    out.println("<CENTER><H1>hello world<H1></CENTER>");
+		    out.flush();
 			
 			out.close();
 			bis.close();

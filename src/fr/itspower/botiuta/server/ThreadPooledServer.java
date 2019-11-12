@@ -9,7 +9,7 @@ import fr.itspower.botiuta.RequestHandler;
 
 public class ThreadPooledServer extends Server {
 	
-	protected ExecutorService threadPool = Executors.newFixedThreadPool(1);
+	protected ExecutorService threadPool = Executors.newFixedThreadPool(8);
 	
 	public ThreadPooledServer(int port) {
 		super(port);
