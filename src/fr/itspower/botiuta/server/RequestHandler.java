@@ -6,7 +6,6 @@ import java.net.Socket;
 
 public class RequestHandler implements Runnable {
 
-    private final static int PORT   = 80;
     private ServerSocket serverSocket = null;
     private Thread runningThread = null;
     private boolean isStopped = false;
@@ -33,10 +32,10 @@ public class RequestHandler implements Runnable {
                     "Error accepting client connection", e);
             }
             new Thread(
-            	//clientSocket
+            		
             ).start();
         }
-        System.out.println("Server Stopped.") ;
+        System.out.println("serveur stoppe") ;
     }
 
 
