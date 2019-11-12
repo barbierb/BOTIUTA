@@ -1,11 +1,14 @@
 package fr.itspower.botiuta;
 
-import fr.itspower.botiuta.mail.MailSender;
+import fr.itspower.botiuta.server.ThreadPooledServer;
 
 public class BOTIUTA {
 	
 	public static void main(String[] args) {
-		MailSender.getInstance().testMail();
+		//MailSender.getInstance().testMail();
+		
+		ThreadPooledServer mts = new ThreadPooledServer(80);
+		new Thread(mts).start();
 	}
 	
 	private static final BOTIUTA instance = new BOTIUTA();
