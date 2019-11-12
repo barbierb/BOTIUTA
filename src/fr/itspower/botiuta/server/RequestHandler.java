@@ -6,7 +6,6 @@ import java.net.Socket;
 
 public class RequestHandler implements Runnable {
 
-    private final static int PORT   = 80;
     private ServerSocket serverSocket = null;
     private Thread runningThread = null;
     private boolean isStopped = false;
@@ -15,12 +14,15 @@ public class RequestHandler implements Runnable {
     	
     }
 
-    public void run(){
-        synchronized(this){
+    public void run() {
+    	
+        synchronized(this) {
             this.runningThread = Thread.currentThread();
         }
-        openServerSocket();
-        while(!isStopped()){
+        
+        start();
+        
+        while(!isStopped()) {
             Socket clientSocket = null;
             try {
                 clientSocket = this.serverSocket.accept();
@@ -53,7 +55,7 @@ public class RequestHandler implements Runnable {
         }
     }
 
-    private void openServerSocket() {
+    private void start() {
         try {
             this.serverSocket = new ServerSocket(PORT);
         } catch (IOException e) {
