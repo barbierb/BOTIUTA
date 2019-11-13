@@ -7,7 +7,7 @@ public class BOTIUTA {
 	public static void main(String[] args) {
 		//MailSender.getInstance().testMail();
 		
-		ThreadPooledServer mts = new ThreadPooledServer(80);
+		ThreadPooledServer mts = new ThreadPooledServer(2000);
 		new Thread(mts).start();
 	}
 	

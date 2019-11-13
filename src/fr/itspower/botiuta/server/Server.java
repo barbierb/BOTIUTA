@@ -35,9 +35,9 @@ public abstract class Server implements Runnable {
         try {
             this.serverSocket = new ServerSocket(PORT);
         } catch(BindException e) {
-            throw new Error("le port "+PrivateData.REQ_PORT+" est deja utilise.", e);
+            throw new Error("le port "+PORT+" est deja utilise.", e);
         } catch(IOException e) {
-            throw new Error("le port "+PrivateData.REQ_PORT+" ne peut etre ouvert.", e);
+            throw new Error("le port "+PORT+" ne peut etre ouvert.", e);
         }
     }
 
