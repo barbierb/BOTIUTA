@@ -4,11 +4,14 @@ import fr.itspower.botiuta.server.ThreadPooledServer;
 
 public class BOTIUTA {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		//MailSender.getInstance().testMail();
 		
 		ThreadPooledServer mts = new ThreadPooledServer(2000);
-		new Thread(mts).start();
+		Thread t = new Thread(mts);
+		t.start();
+		Thread.sleep(1000 * 700);
+		System.exit(1);
 	}
 	
 	private static final BOTIUTA instance = new BOTIUTA();
