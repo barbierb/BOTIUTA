@@ -47,30 +47,20 @@ public class RequestHandler implements Runnable {
 				return;
 			}
 			
+			if(line.startsWith(GET)) {
+				
+				
+				
+			} else if(line.startsWith(POST)) {
+				
+				
+				
+			}
+			
+			
             System.out.println("H< " + line);
             
-            int postDataI = -1;
-            while ((line = in.readLine()) != null && (line.length() != 0)) {
-                System.out.println("H< "+line);
-                if (line.indexOf("Content-Length:") > -1) {
-                    postDataI = new Integer(line.substring(line.indexOf("Content-Length:") + 16,line.length())).intValue();
-                }
-            }
             
-            String postData = "";
-            if (postDataI > 0) {
-                char[] charArray = new char[postDataI];
-                in.read(charArray, 0, postDataI);
-                postData = new String(charArray);
-                System.out.println("D< "+postData);
-                
-                JSONObject jobj = new JSONObject(postData);
-
-                System.out.println("JSON "+jobj);
-                System.out.println("JSON "+jobj.getJSONObject("message"));
-                System.out.println("JSON "+jobj.getJSONObject("message").getString("text"));
-                
-            }
 
 			close();
 			
