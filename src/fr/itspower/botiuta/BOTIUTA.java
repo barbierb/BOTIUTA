@@ -10,7 +10,7 @@ public class BOTIUTA {
 		ThreadPooledServer mts = new ThreadPooledServer(2000);
 		Thread t = new Thread(mts);
 		t.start();
-		Thread.sleep(1000 * 700);
+		Thread.sleep(1000 * 8);
 		System.exit(1);
 	}
 	

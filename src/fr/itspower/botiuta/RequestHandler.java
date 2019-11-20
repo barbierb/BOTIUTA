@@ -5,14 +5,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import fr.itspower.botiuta.utils.PrivateData;
 
 public class RequestHandler implements Runnable {
 
-	private final String GET = "GET";
-	private final String POST = "POST";
+	private static final String GET = "GET";
+	private static final String POST = "POST";
+	private static final String SPACE = " ";
+	private static final String INTERROGATION = "\\?"; // '\\' permet l'acceptation de '?' par regex.
+	private static final String ETCOMMERCIAL = "&";
+	private static final String EGAL = "=";
+
+	private static final String AUTH_MODE_KEY = "hub_mode";
+	private static final String AUTH_TOKEN_KEY = "hub_verify_token";
+	private static final String AUTH_CHALLENGE_KEY = "hub_challenge";
+	private static final String AUTH_VERIFY = "verify";
+	
+	
 
 	@SuppressWarnings("unused")
 	private Socket request;
@@ -34,12 +48,9 @@ public class RequestHandler implements Runnable {
 	@Override
 	public void run() {
 		
-		
-		
 		String line;
 		
 		try {
-        	
 			line = in.readLine();
 			if(!line.startsWith(GET) && !line.startsWith(POST)) {
 				sendBody(400);
@@ -49,7 +60,40 @@ public class RequestHandler implements Runnable {
 			
 			if(line.startsWith(GET)) {
 				
+				Map<String, String> paires = new HashMap<String, String>();
 				
+			    // enleve le chemin demandé de la requete HTTP, le protocol et ne garde que les parametres.
+				String ligne_params = line.split(SPACE)[1].split(INTERROGATION)[1];
+				String[] params_splitted = ligne_params.split(ETCOMMERCIAL);
+
+			    for (String param : params_splitted) {
+			    	String[] pair = param.split(EGAL);
+			    	paires.put(pair[0], pair[1]);
+			    }
+			    
+			    // Vérifie que le serveur facebook demande bien une association avec l'application.
+			    if(!paires.containsKey(AUTH_MODE_KEY) || !paires.get(AUTH_MODE_KEY).equals(AUTH_VERIFY)) {
+			    	sendBody(400);
+					close();
+					return;
+			    }
+			    
+			    // Vérifie si les mots de passe application et serveur sont égaux.
+			    if(!paires.containsKey(AUTH_TOKEN_KEY) || !paires.get(AUTH_TOKEN_KEY).equals(PrivateData.AUTH_PASSWORD)) {
+			    	sendBody(400);
+					close();
+					return;
+			    }
+			    
+			    // Vérifie que le serveur a bien envoyé son mot de passe hand-check.
+			    if(!paires.containsKey(AUTH_CHALLENGE_KEY)) {
+			    	sendBody(400);
+					close();
+					return;
+			    }
+			    
+		    	sendBody(200);
+		    	out.println(paires.get(AUTH_CHALLENGE_KEY));
 				
 			} else if(line.startsWith(POST)) {
 				
@@ -58,7 +102,7 @@ public class RequestHandler implements Runnable {
 			}
 			
 			
-            System.out.println("H< " + line);
+            //System.out.println("H< " + line);
             
             
 
